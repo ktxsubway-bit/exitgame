@@ -1,10 +1,8 @@
-
 <!DOCTYPE html>
 <html lang="ko">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
   <title>game</title>
 
   <style>
@@ -20,11 +18,52 @@
       padding: 0;
       overflow: hidden;
       background: #000;
+      font-family: Arial, sans-serif;
     }
 
     #game {
       width: 100vw;
       height: 100vh;
+      display: none; /* 버전 선택 전까지 숨김 */
+    }
+
+    /* 버전 선택 메뉴 스타일링 */
+    #menu {
+      width: 100vw;
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      color: #fff;
+    }
+
+    #menu h1 {
+      font-size: 2.5rem;
+      margin-bottom: 2rem;
+    }
+
+    .btn-container {
+      display: flex;
+      gap: 20px;
+    }
+
+    .btn {
+      padding: 15px 30px;
+      font-size: 1.2rem;
+      font-weight: bold;
+      color: #fff;
+      background-color: #333;
+      border: 2px solid #fff;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: all 0.2s ease-in-out;
+    }
+
+    .btn:hover {
+      background-color: #fff;
+      color: #000;
+      transform: scale(1.05);
     }
 
     ruffle-player {
@@ -38,22 +77,38 @@
 </head>
 <body>
 
+  <!-- 버전 선택 메뉴 -->
+  <div id="menu">
+    <h1>버전을 선택하세요</h1>
+    <div class="btn-container">
+      <button class="btn" onclick="startGame('감옥탈출-오리지널-1인용-플래시게임.swf')">오리지널</button>
+      <button class="btn" onclick="startGame('감옥탈출-리마스터-플래시게임.swf')">리마스터</button>
+    </div>
+  </div>
+
+  <!-- 게임 영역 -->
   <div id="game"></div>
 
   <script>
     window.RufflePlayer = window.RufflePlayer || {};
 
-    window.addEventListener("load", function () {
+    function startGame(swfPath) {
+      // 메뉴 숨기고 게임 영역 표시
+      document.getElementById("menu").style.display = "none";
+      const gameContainer = document.getElementById("game");
+      gameContainer.style.display = "block";
+
+      // Ruffle 플레이어 생성 및 실행
       const ruffle = window.RufflePlayer.newest();
       const player = ruffle.createPlayer();
 
       player.style.width = "100%";
       player.style.height = "100%";
 
-      document.getElementById("game").appendChild(player);
+      gameContainer.appendChild(player);
 
       player.ruffle().load({
-        url: "감옥탈출-오리지널-1인용-플래시게임.swf",
+        url: swfPath,
         autoplay: "on",
         unmuteOverlay: "hidden",
         warnOnUnsupportedContent: false,
@@ -61,7 +116,7 @@
         scale: "showAll",
         allowScriptAccess: false
       });
-    });
+    }
   </script>
 
 </body>
